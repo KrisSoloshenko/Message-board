@@ -1,0 +1,17 @@
+{% extends 'default.html' %}
+{% load static %}
+
+{% block title %}
+Deleting an ad
+{% endblock title %}
+
+{% block content %}
+    <h1> Удаление объявления </h1>
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p> Удаляем "{{ object.title }}"? </p>
+        <input type="submit" value="Удалить" />
+    </form>
+{% endblock content %}

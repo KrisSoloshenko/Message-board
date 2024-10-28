@@ -1,0 +1,25 @@
+{% extends 'default.html' %} 
+ 
+{% block title %}
+Ad
+{% endblock title %}
+ 
+{% block content %}
+    <br>
+    <h1>{{ ad.title }} </h1>
+    <hr>
+    {{ ad.text|safe }}
+    {% if ad.upload %}
+        <p> {{ ad.upload|safe }} </p>
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+        <tr>
+            <td>
+                <a href="/ads/{{ ad.id }}/update/"> <ins> редактировать </ins> </a> |
+                <a href="/ads/{{ ad.id }}/delete/"> <ins> удалить </ins> </a>
+            </td>
+        </tr>
+    {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'default.html' %} 
+ 
+{% block title %}
+Ads
+{% endblock title %}
+
+{% block content %}
+    <br>
+    <h2>Лента объявлений</h2>
+    <p> количество публикаций: {{ ads|length }} </p>
+    {% if ads %}
+        <table width="100%" cellpadding="8px">
+            <tr>
+                {% for ad in ads %}
+                    <hr>
+                    <p> <strong> {{ ad.title }} </strong> </p>
+                    <p> {{ ad.text|safe }} </p>
+                    {% if ad.upload %}
+                        <p> {{ ad.upload|safe }} </p>
+                    {% endif %}
+                    <br>
+                    <a href="/ads/{{ ad.id }}/update/"> <ins> редактировать </ins> </a> |
+                    <a href="/ads/{{ ad.id }}/delete/"> <ins> удалить </ins> </a>
+                {% endfor %}
+            </tr>
+
+   {% else %}
+       <h2>Объявлений нет</h2>
+   {% endif %}
+{% endblock content %}

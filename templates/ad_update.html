@@ -1,0 +1,17 @@
+{% extends 'default.html' %}
+{% load static %}
+
+{% block title %}
+Editing an ad
+{% endblock title %}
+
+{% block content %}
+    <h1> Редактирование объявления </h1>
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.media }}
+        <button type="submit">Подтвердить</button>
+    </form>
+{% endblock content %}
