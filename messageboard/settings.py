@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'board',
-    'accounts',
+    'django_filters',
     'ckeditor',
     'ckeditor_uploader',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'board',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "allauth.account.middleware.AccountMiddleware",
 ]
-
 
 SITE_ID = 1
 
@@ -143,11 +143,11 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CKeditor
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+# CKeditor
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
@@ -210,5 +210,23 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
 
-LOGIN_REDIRECT_URL = "/ads"
+
+LOGIN_URL = 'account_login'
+LOGIN_REDIRECT_URL = '/ads'
+LOGOUT_REDIRECT_URL = 'account_login'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #консольный вывод писем
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'checking.notice.sf@yandex.ru'
+EMAIL_HOST_PASSWORD = 'xtaprfqvacdpergw'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = 'checking.notice.sf@yandex.ru'

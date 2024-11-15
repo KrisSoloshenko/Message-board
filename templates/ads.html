@@ -13,18 +13,49 @@ Ads
             <tr>
                 {% for ad in ads %}
                     <hr>
-                    <p> <strong> {{ ad.title }} </strong> </p>
+                    <p> 
+                        <strong> {{ ad.title }} </strong> |
+                        <font color="gray"> Категория: {{ ad.get_category_display }} </font> </p>
+                    </p>
+                    <hr>
                     <p> {{ ad.text|safe }} </p>
                     {% if ad.upload %}
                         <p> {{ ad.upload|safe }} </p>
                     {% endif %}
                     <br>
-                    <a href="/ads/{{ ad.id }}/update/"> <ins> редактировать </ins> </a> |
-                    <a href="/ads/{{ ad.id }}/delete/"> <ins> удалить </ins> </a>
+                    {% if request.user.is_authenticated %}
+                        <div>
+                            <a href="{% url 'user_response_create' pk=ad.id %}"><strong> Добавить отклик </strong></a>
+                        </div>
+                        <div>
+                            <a href="{% url 'ad_detail' pk=ad.id %}">Открыть объявление</a>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </tr>
 
    {% else %}
        <h2>Объявлений нет</h2>
    {% endif %}
+
+   <br>
+   <br>
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
 {% endblock content %}

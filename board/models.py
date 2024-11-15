@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -32,7 +33,7 @@ class Ad(models.Model):
 
 
 class UserResponse(models.Model):
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, )
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name='Объявления', )
     user = models.ForeignKey(User, on_delete=models.CASCADE, )
     text = models.TextField()
     creation_time = models.DateTimeField(auto_now_add=True, )
@@ -40,3 +41,6 @@ class UserResponse(models.Model):
     
     def __str__(self):
         return f'{self.user}: {self.text}'
+    
+    def get_absolute_url(self):
+        return reverse('ad_detail', args=[str(self.ad.id)])

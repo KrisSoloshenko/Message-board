@@ -6,20 +6,63 @@ Ad
  
 {% block content %}
     <br>
-    <h1>{{ ad.title }} </h1>
-    <hr>
+    <h3> 
+        <strong> {{ ad.title }} </strong> |
+        <font color="gray"> Категория: {{ ad.get_category_display }} </font> </p>
+    </h3>
+    <br>
     {{ ad.text|safe }}
     {% if ad.upload %}
         <p> {{ ad.upload|safe }} </p>
     {% endif %}
+    <hr>
+
+    
 
     {% if request.user.is_authenticated %}
-        <tr>
-            <td>
-                <a href="/ads/{{ ad.id }}/update/"> <ins> редактировать </ins> </a> |
-                <a href="/ads/{{ ad.id }}/delete/"> <ins> удалить </ins> </a>
-            </td>
-        </tr>
+        <div>
+            <a href="{% url 'user_response_create' pk=ad.id %}"><strong> Добавить отклик </strong> </a>
+        </div>
+        {% if ad.author == request.user %}
+            <a href="{% url 'ad_update' pk=ad.id %}"> редактировать </a> |
+            <a href="{% url 'ad_delete' pk=ad.id %}"> удалить </a>
+        {% endif %}
+    {% endif %}
+    <hr>
+
+    {% if ad_respones %}
+    <h5>Отклики к объявлению:</h5>
+    <table width="100%" cellpadding="8px">
+        {% for response in ad_respones %}
+            {% if response.status %}
+                <tr>
+                    <td> {{ response.text }}</td>
+                    <td> Дата публикации: {{ response.creation_time|date:'d M Y' }} </td>
+                    <td> Автор отклика: {{ response.user }} </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <br>
+    <br>
+    {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+           ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
     {% endif %}
 
 {% endblock content %}

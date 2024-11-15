@@ -1,0 +1,79 @@
+{% extends 'default.html' %} 
+
+{% block title %}
+My prifile
+{% endblock title %}
+
+{% block content %}
+    <br>
+    <h3>Личный кабинет {{ request.user.username }}</h3>
+    <hr>
+
+    <form action="" method="get">
+        {{ filterset.form.as_p }}
+        <input type="submit" value="Найти"/>
+    </form>
+
+    <br>
+    <h3> Отклики на мои объявления </h3>
+        {% if profile_responses %}
+                <p> количество откликов: {{ profile_responses|length }} </p>
+                    <table width="100%" cellpadding="8px">
+                        <tr>
+                            <td> <strong> Отклик </strong> </td>
+                            <td> <strong> Автор </strong> </td>
+                            <td> <strong> Дата публикации </strong> </td>
+                            <td> <strong> Статус </td>
+                            <td> <strong> Обявление </strong> </td>
+                            <td><strong> Действия </strong></td>
+                        </tr>
+                        {% for response in profile_responses %}
+                        <tr>
+                            <td> {{ response.text }}</td>
+                            <td> {{ response.user }}</td>
+                            <td> {{ response.creation_time|date:'d M Y' }} </td>
+                            <td> 
+                                {% if response.status == False %}
+                                    На подтверждении
+                                {% else %}
+                                    Подтвержден
+                                {% endif %}
+                            </td>
+                            <td> {{ response.ad.title }} </td>
+                            <td> 
+                                {% if response.status == False %}
+                                    <form method="post" action="{% url 'confirm_response' response.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" name="action" value="confirm">Принять</button>
+                                    </form>
+                                {% endif %}
+                                <a href="{% url 'response_delete' pk=response.id %}">Удалить</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+        {% else %}
+            <h4> Вам еще не оставили ни одного отклика! </h4>
+        {% endif %}
+
+        <br>
+        <br>
+        {% if page_obj.has_previous %}
+            <a href="?page=1">1</a>
+            {% if page_obj.previous_page_number != 1 %}
+                ...
+                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+        {% endif %}
+     
+        {{ page_obj.number }}
+     
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+            {% if paginator.num_pages != page_obj.next_page_number %}
+                ...
+                <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+        {% endif %}
+        
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+{% load static %}
+
+{% block title %}
+Creating an response
+{% endblock title %}
+
+{% block content %}
+    <h1> Создание отклика на объявление "{{ad_id}}"</h1>
+    <p> {{ad_id.text|safe}} </p>
+    {% if ad_id.upload %}
+        <p> {{ ad_id.upload|safe }} </p>
+    {% endif %}
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Сохранить" />
+    </form>
+{% endblock content %}

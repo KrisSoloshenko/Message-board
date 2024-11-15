@@ -26,17 +26,36 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="/ads/">Все объявления</a>
                         </li>
+                        {% if request.user.is_superuser %}
                         <li class="nav-item active">
                             <a class="nav-link" href="/admin/">Админка</a>
                         </li>
+                        {% endif %}
                         {% if request.user.is_authenticated %}
                             <li class="nav-item active">
                                 <a class="nav-link" href="/ads/create/">Добавить объявление</a>
                             </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/ads/responses/">Мои отклики</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/ads/profile/"> Мой профиль</a>
+                            </li>
+
                         {% endif %}
                     </ul>
                 </div>
             </div>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/accounts/login/">Вход</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/accounts/logout/">Выход</a>
+                        </li>
+                    </ul>
+                </div>
          </nav>
          
         <!-- Page content-->
